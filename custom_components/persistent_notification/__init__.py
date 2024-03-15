@@ -8,13 +8,16 @@ from homeassistant.bootstrap import CORE_INTEGRATIONS
 from homeassistant.core import HomeAssistant
 import homeassistant.helpers.config_validation as cv
 from homeassistant.helpers.typing import ConfigType
-from homeassistant.loader import (
-    DATA_COMPONENTS,
-    DATA_CUSTOM_COMPONENTS,
-    DATA_INTEGRATIONS,
-    DATA_MISSING_PLATFORMS
-)
 from homeassistant.setup import async_setup_component, _async_setup_component
+
+try: from homeassistant.loader import DATA_COMPONENTS
+except ImportError: DATA_COMPONENTS = None
+try: from homeassistant.loader import DATA_CUSTOM_COMPONENTS
+except ImportError: DATA_CUSTOM_COMPONENTS = None
+try: from homeassistant.loader import DATA_INTEGRATIONS
+except ImportError: DATA_INTEGRATIONS = None
+try: from homeassistant.loader import DATA_MISSING_PLATFORMS
+except ImportError: DATA_MISSING_PLATFORMS = None
 
 
 _LOGGER = logging.getLogger("early_loader")
@@ -75,12 +78,17 @@ def clear_caches_and_delete_custom_self(hass: HomeAssistant, domain: str) -> Non
     - homeassistant.loader.async_get_integrations
     - homeassistant.loader.async_get_custom_components
     - homeassistant.loader.Integration.get_component
+    - homeassistant.loader.Integration.{,async_}get_platform
     """
-    integration_cache = hass.data[DATA_INTEGRATIONS]
-    integration_cache.pop(domain, None)
-    custom_integration_cache = hass.data[DATA_CUSTOM_COMPONENTS]
-    custom_integration_cache.pop(domain, None)
-    component_cache = hass.data[DATA_COMPONENTS]
-    component_cache.pop(domain, None)
-    missing_platforms_cache = hass.data[DATA_MISSING_PLATFORMS]
-    missing_platforms_cache.clear()
+    if DATA_INTEGRATIONS:
+        integration_cache = hass.data[DATA_INTEGRATIONS]
+        integration_cache.pop(domain, None)
+    if DATA_CUSTOM_COMPONENTS:
+        custom_integration_cache = hass.data[DATA_CUSTOM_COMPONENTS]
+        custom_integration_cache.pop(domain, None)
+    if DATA_COMPONENTS:
+        component_cache = hass.data[DATA_COMPONENTS]
+        component_cache.pop(domain, None)
+    if DATA_MISSING_PLATFORMS:
+        missing_platforms_cache = hass.data[DATA_MISSING_PLATFORMS]
+        missing_platforms_cache.clear()
