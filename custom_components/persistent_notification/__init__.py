@@ -1,7 +1,6 @@
 """Hacking persistent_notification for early loading hook."""
 
 import asyncio
-from collections.abc import Iterable
 import logging
 import voluptuous as vol
 
@@ -12,7 +11,8 @@ from homeassistant.helpers.typing import ConfigType
 from homeassistant.loader import (
     DATA_COMPONENTS,
     DATA_CUSTOM_COMPONENTS,
-    DATA_INTEGRATIONS
+    DATA_INTEGRATIONS,
+    DATA_MISSING_PLATFORMS
 )
 from homeassistant.setup import async_setup_component, _async_setup_component
 
@@ -82,3 +82,5 @@ def clear_caches_and_delete_custom_self(hass: HomeAssistant, domain: str) -> Non
     custom_integration_cache.pop(domain, None)
     component_cache = hass.data[DATA_COMPONENTS]
     component_cache.pop(domain, None)
+    missing_platforms_cache = hass.data[DATA_MISSING_PLATFORMS]
+    missing_platforms_cache.clear()
