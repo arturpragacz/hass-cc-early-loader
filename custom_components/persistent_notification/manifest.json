@@ -1,8 +1,0 @@
-{
-  "domain": "persistent_notification",
-  "name": "Early Loader",
-  "version": "2024.3.1",
-  "codeowners": ["@arturpragacz"],
-  "integration_type": "system",
-  "quality_scale": "internal"
-}

@@ -1,0 +1,10 @@
+{
+  "domain": "persistent_notification",
+  "name": "Persistent Notification (Hacked)",
+  "version": "1.0.0",
+  "codeowners": ["@arturpragacz"],
+  "integration_type": "system",
+  "documentation": "https://github.com/arturpragacz/hass-cc-early-loader",
+  "issue_tracker": "https://github.com/arturpragacz/hass-cc-early-loader/issues",
+  "dependencies": ["early_loader"]
+}

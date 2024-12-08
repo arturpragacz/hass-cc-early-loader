@@ -6,14 +6,9 @@ This custom integration provides a hook that allows other integrations to load e
 
 This integration can be installed using [HACS](https://hacs.xyz/).
 
-- Add a new custom repository to HACS (in the three dot menu).
-- Insert the link to this repository.
-- Select `integration`.
-- Click the add button.
-- The integration should now display in HACS.
+- Add this repository as a custom integration repository to HACS.
+- The integration should now be available in HACS.
 - Install it like every other HACS integration.
 - Restart Home Assistant.
 
-## Configuration
-
-In order to use this integration add `early_loader_hook: true` below the integration entry that you want to load early in `configuration.yaml`.
+[![Open your Home Assistant instance and navigate to the repository inside the Home Assistant Community Store.](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=arturpragacz&repository=hass-cc-early-loader&category=Integration)
