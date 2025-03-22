@@ -68,6 +68,10 @@ async def async_setup(hass: HomeAssistant, config: ConfigType) -> bool:
 
             return False
 
+        _LOGGER.error(
+            "PERSISTENT_NOTIFICATION somehow launches before EARLY_LOADER: early loading not executed"
+        )
+
     if PERSISTENT_NOTIFICATION_DOMAIN not in CORE_INTEGRATIONS:
         _LOGGER.error(
             "PERSISTENT_NOTIFICATION no longer in CORE_INTEGRATIONS: early loading not executed"
@@ -75,7 +79,7 @@ async def async_setup(hass: HomeAssistant, config: ConfigType) -> bool:
 
     result = await _async_setup_persistent_notification(hass, config)
     if not result:
-        _LOGGER.error("Persistent Notification setup fail")
+        _LOGGER.error("PERSISTENT_NOTIFICATION setup fail")
         return result
 
     await _async_setup_clients(hass, config)
