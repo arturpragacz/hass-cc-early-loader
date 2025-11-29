@@ -1,9 +1,9 @@
 {
   "domain": "early_loader",
   "name": "Early Loader",
-  "version": "1.0.0",
   "codeowners": ["@arturpragacz"],
-  "integration_type": "system",
   "documentation": "https://github.com/arturpragacz/hass-cc-early-loader",
-  "issue_tracker": "https://github.com/arturpragacz/hass-cc-early-loader/issues"
+  "integration_type": "system",
+  "issue_tracker": "https://github.com/arturpragacz/hass-cc-early-loader/issues",
+  "version": "1.0.0"
 }
