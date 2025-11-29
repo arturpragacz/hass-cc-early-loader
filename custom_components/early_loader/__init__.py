@@ -106,8 +106,13 @@ async def _async_get_clients(
             continue
 
         dependencies = integration.dependencies
+        after_dependencies = integration.after_dependencies
+
         if DOMAIN in dependencies:
             dependencies.remove(DOMAIN)
+            clients.append(domain)
+        elif DOMAIN in after_dependencies:
+            after_dependencies.remove(DOMAIN)
             clients.append(domain)
 
     return clients
@@ -149,7 +154,7 @@ async def _async_setup_persistent_notification(
     """
     integration, component = await _clear_caches(hass, PERSISTENT_NOTIFICATION_DOMAIN)
 
-    # same comments apply below as they do in _async_setup_others
+    # same comments apply below as they do in _async_setup_clients
     async with hass.timeout.async_freeze(DOMAIN):
         result = await _async_setup_component(
             hass, PERSISTENT_NOTIFICATION_DOMAIN, config
