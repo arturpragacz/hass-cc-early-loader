@@ -7,8 +7,6 @@ from pathlib import Path
 import shutil
 from typing import Any, cast
 
-import voluptuous as vol
-
 from homeassistant.bootstrap import CORE_INTEGRATIONS
 from homeassistant.components.homeassistant import KEY_HA_STOP
 from homeassistant.components.persistent_notification import (
@@ -34,21 +32,7 @@ _LOGGER = logging.getLogger(__name__)
 DOMAIN = "early_loader"
 
 
-def _schema_validator(remove_extra=False):
-    def validate(schema: dict):
-        new_schema = {}
-        for k, v in schema.items():
-            if not isinstance(v, dict):
-                continue
-            hook = v.get("early_loader_hook", False)
-            if cv.boolean(hook):
-                new_schema[k] = v
-        return new_schema if remove_extra else schema
-
-    return validate
-
-
-CONFIG_SCHEMA = vol.Schema(_schema_validator())
+CONFIG_SCHEMA = cv.empty_config_schema(DOMAIN)
 
 
 async def async_setup(hass: HomeAssistant, config: ConfigType) -> bool:
@@ -121,18 +105,12 @@ async def _async_get_clients(
         if not isinstance(integration, Integration):
             continue
 
-        if dependencies := integration.manifest.get("dependencies"):
-            try:
-                dependencies.remove(DOMAIN)
-            except ValueError:
-                continue
-
+        dependencies = integration.dependencies
+        if DOMAIN in dependencies:
+            dependencies.remove(DOMAIN)
             clients.append(domain)
 
-    # legacy, to be removed in 2025.7
-    DOMAINS_SCHEMA = vol.Schema(_schema_validator(True))
-    clients_with_explicit_hook = DOMAINS_SCHEMA(config)
-    return set(clients) | set(clients_with_explicit_hook)
+    return clients
 
 
 def _setup_subcomponents(hass: HomeAssistant) -> bool:
